@@ -1,12 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="32dp"
     android:clipToPadding="false"
     android:background="#ffffff"
     tools:context=".MainActivity">
@@ -14,7 +12,7 @@
     <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="32dp"
+        android:layout_margin="32dp"
         app:cardCornerRadius="8dp"
         app:cardElevation="24dp">
 
@@ -31,12 +29,21 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/suggestionListView"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"/>
-    <Button
+        android:layout_height="match_parent"
+        android:paddingTop="112dp"
+        android:paddingBottom="112dp"
+        android:paddingStart="32dp"
+        android:paddingEnd="32dp"
+        android:clipToPadding="false"/>
+
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/btn_search"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_margin="32dp"
+        android:layout_gravity="bottom"
+        android:padding="16dp"
+        app:cornerRadius="8dp"
         android:text="search"/>
 
-</LinearLayout>
+</FrameLayout>
