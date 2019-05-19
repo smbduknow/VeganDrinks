@@ -9,6 +9,26 @@
     android:background="#ffffff"
     tools:context=".MainActivity">
 
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/suggestionListView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingTop="112dp"
+        android:paddingBottom="112dp"
+        android:clipToPadding="false"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:layout_gravity="top"
+        android:background="@android:color/white"/>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:layout_gravity="bottom"
+        android:background="@android:color/white"/>
+
     <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -25,16 +45,6 @@
             android:hint="Search drink"/>
 
     </com.google.android.material.card.MaterialCardView>
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/suggestionListView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:paddingTop="112dp"
-        android:paddingBottom="112dp"
-        android:paddingStart="32dp"
-        android:paddingEnd="32dp"
-        android:clipToPadding="false"/>
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btn_search"
