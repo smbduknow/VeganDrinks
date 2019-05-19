@@ -38,5 +38,5 @@ object RemoteDataSource {
 
     fun getCompanyDetails(id: Int) = API.getCompany(id)
         .subscribeOn(Schedulers.io())
-        .map { it.company  }
+        .map { it.company }
 }

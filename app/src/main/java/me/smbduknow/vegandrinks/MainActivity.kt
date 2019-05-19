@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.activity_main.*
 import me.smbduknow.vegandrinks.common.observeNotNull
+import me.smbduknow.vegandrinks.details.ProductActivity
 
 class MainActivity : AppCompatActivity() {
 
@@ -24,6 +25,10 @@ class MainActivity : AppCompatActivity() {
         }
 
         btn_search.setOnClickListener { vm.onSubmit(search_edit.text?.toString() ?: "") }
+
+        suggestionAdapter.onItemClickListener = { product ->
+            startActivity(ProductActivity.newIntent(this, product, null)) // TODO company
+        }
 
         vm.suggestionsState.observeNotNull(this) { suggestions ->
             suggestionAdapter.items = suggestions

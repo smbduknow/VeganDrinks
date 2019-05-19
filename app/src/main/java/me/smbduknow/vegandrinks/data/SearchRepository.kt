@@ -14,9 +14,10 @@ class SearchRepository {
             .toObservable()
             .flatMapIterable()
             .flatMapSingle { source.getCompanyDetails(it.id) }
-            .flatMap {company ->
+            .flatMap { company ->
                 company.products
                     .filter { it.product_name.contains(query, ignoreCase = true) }
-                    .toObservable() }
+                    .toObservable()
+            }
             .toList()
 }
