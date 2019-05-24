@@ -3,6 +3,7 @@ package me.smbduknow.vegandrinks
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.item_search_result.view.*
@@ -26,12 +27,30 @@ class DrinkListAdapter : RecyclerView.Adapter<DrinkListAdapter.ViewHolder>() {
         val item = items[pos]
         holder.titleView.text = item.product_name
         holder.statusText.text = item.status
+        holder.statusLabel.setBackgroundResource(
+            when (item.red_yellow_green.toLowerCase()) {
+                "red" -> R.color.red
+                "yellow" -> R.color.yellow
+                "green" -> R.color.green
+                else -> android.R.color.transparent
+            }
+        )
+        holder.iconView.setBackgroundResource(
+            when (item.booze_type.toLowerCase()) {
+                "beer" -> R.drawable.ic_beer
+                "wine" -> R.drawable.ic_wine
+                "liquor" -> R.drawable.ic_liquor
+                else -> 0
+            }
+        )
     }
 
     class ViewHolder(itemView: View, clickListener: (pos: Int) -> Unit) : RecyclerView.ViewHolder(itemView) {
 
         val titleView: TextView by lazy { itemView.title_text }
         val statusText: TextView by lazy { itemView.status_text }
+        val statusLabel: View by lazy { itemView.drink_status }
+        val iconView: ImageView by lazy { itemView.img_drink_icon }
 
         init {
             itemView.setOnClickListener { clickListener(adapterPosition) }
