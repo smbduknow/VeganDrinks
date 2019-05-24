@@ -27,7 +27,8 @@ class MainActivity : AppCompatActivity() {
         btn_search.setOnClickListener { vm.onSubmit(search_edit.text?.toString() ?: "") }
 
         suggestionAdapter.onItemClickListener = { product ->
-            startActivity(ProductActivity.newIntent(this, product, null)) // TODO company
+            val company = vm.companies.find{ it.id == product.company_id }
+            startActivity(ProductActivity.newIntent(this, product, company))
         }
 
         vm.suggestionsState.observeNotNull(this) { suggestions ->

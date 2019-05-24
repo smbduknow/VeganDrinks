@@ -1,6 +1,7 @@
 package me.smbduknow.vegandrinks.data.model
 
 import android.os.Parcelable
+import kotlinx.android.parcel.IgnoredOnParcel
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
@@ -23,9 +24,11 @@ data class Company(
     val created_on: String,
     val updated_on: String,
     val status: String,
-    val red_yellow_green: String,
-    val products: List<Product>
+    val red_yellow_green: String
 ) : Parcelable {
+
+    @IgnoredOnParcel
+    var products: List<Product> = emptyList()
 
     class Wrapper(
         val company: Company
