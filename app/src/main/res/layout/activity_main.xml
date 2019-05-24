@@ -6,33 +6,30 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:clipToPadding="false"
-    android:background="#ffffff"
+    android:background="@color/blue_soft"
     tools:context=".MainActivity">
-
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/suggestionListView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingTop="112dp"
-        android:paddingBottom="112dp"
-        android:clipToPadding="false"/>
+        android:paddingTop="140dp"
+        android:paddingBottom="16dp"
+        android:clipToPadding="false"
+        tools:listitem="@layout/item_search_result"/>
 
     <View
         android:layout_width="match_parent"
         android:layout_height="80dp"
         android:layout_gravity="top"
-        android:background="@android:color/white"/>
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="80dp"
-        android:layout_gravity="bottom"
-        android:background="@android:color/white"/>
+        android:background="@color/blue_soft"/>
 
     <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="32dp"
+        android:layout_marginTop="48dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
         app:cardCornerRadius="8dp"
         app:cardElevation="24dp">
 
@@ -42,18 +39,10 @@
             android:layout_height="wrap_content"
             android:background="#ffffff"
             android:padding="16dp"
+            android:imeOptions="actionSearch"
+            android:inputType="text"
             android:hint="Search drink"/>
 
     </com.google.android.material.card.MaterialCardView>
-
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/btn_search"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="32dp"
-        android:layout_gravity="bottom"
-        android:padding="16dp"
-        app:cornerRadius="8dp"
-        android:text="search"/>
 
 </FrameLayout>
