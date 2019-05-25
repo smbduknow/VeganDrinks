@@ -4,15 +4,11 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import io.reactivex.subjects.BehaviorSubject
 import me.smbduknow.vegandrinks.data.SearchRepository
-import me.smbduknow.vegandrinks.data.model.Company
 import me.smbduknow.vegandrinks.data.model.Product
 
 class MainViewModel : ViewModel() {
 
     val suggestionsState = MutableLiveData<List<Product>>()
-
-    val companies: List<Company>
-        get() = repo.companies
 
     private val onSearchSubmitSubject = BehaviorSubject.create<String>()
 

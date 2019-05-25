@@ -42,8 +42,7 @@ class MainActivity : AppCompatActivity() {
         })
 
         suggestionAdapter.onItemClickListener = { product ->
-            val company = vm.companies.find { it.id == product.company_id }
-            startActivity(ProductActivity.newIntent(this, product, company))
+            startActivity(ProductActivity.newIntent(this, product))
         }
 
         vm.suggestionsState.observeNotNull(this) { suggestions ->

@@ -22,5 +22,6 @@ data class Product(
     val url: String,
     val same_contact_as_company: Boolean,
     val booze_type: String,
-    val red_yellow_green: String
+    val red_yellow_green: String,
+    var company: Company? = null
 ) : Parcelable
