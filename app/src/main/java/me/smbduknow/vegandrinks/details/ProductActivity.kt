@@ -27,9 +27,9 @@ class ProductActivity : AppCompatActivity() {
 
         bg_status.setBackgroundResource(
             when (product?.red_yellow_green?.toLowerCase()) {
-                "red" -> R.color.red
-                "yellow" -> R.color.yellow
-                "green" -> R.color.green
+                "red" -> R.drawable.bg_red
+                "yellow" -> R.drawable.bg_yellow
+                "green" -> R.drawable.bg_green
                 else -> android.R.color.transparent
             }
         )
