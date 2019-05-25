@@ -3,6 +3,7 @@ package me.smbduknow.vegandrinks.details
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_product.*
 import me.smbduknow.vegandrinks.R
@@ -13,6 +14,8 @@ class ProductActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_product)
+
+        window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
 
         val product = intent.getParcelableExtra<Product?>("product")
 
