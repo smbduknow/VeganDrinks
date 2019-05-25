@@ -26,7 +26,7 @@ class DrinkListAdapter : RecyclerView.Adapter<DrinkListAdapter.ViewHolder>() {
     override fun onBindViewHolder(holder: ViewHolder, pos: Int) {
         val item = items[pos]
         holder.titleView.text = item.product_name
-        holder.statusText.text = item.status
+        holder.companyText.text = "by ${item.company?.company_name}"
         holder.statusLabel.setBackgroundResource(
             when (item.red_yellow_green.toLowerCase()) {
                 "red" -> R.color.red
@@ -47,8 +47,8 @@ class DrinkListAdapter : RecyclerView.Adapter<DrinkListAdapter.ViewHolder>() {
 
     class ViewHolder(itemView: View, clickListener: (pos: Int) -> Unit) : RecyclerView.ViewHolder(itemView) {
 
-        val titleView: TextView by lazy { itemView.title_text }
-        val statusText: TextView by lazy { itemView.status_text }
+        val titleView: TextView by lazy { itemView.tv_title }
+        val companyText: TextView by lazy { itemView.tv_company }
         val statusLabel: View by lazy { itemView.drink_status }
         val iconView: ImageView by lazy { itemView.img_drink_icon }
 

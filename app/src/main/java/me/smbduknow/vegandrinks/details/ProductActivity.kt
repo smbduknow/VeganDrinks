@@ -17,9 +17,30 @@ class ProductActivity : AppCompatActivity() {
         val product = intent.getParcelableExtra<Product?>("product")
 
         title_text.text = product?.product_name
-        company_text.text = product?.company?.company_name
-        status_text.text = product?.status
+        tv_company.text = product?.company?.company_name
+        tv_status.text = product?.status
+        tv_country.text = product?.country
         notes_text.text = product?.company?.notes
+
+        bg_status.setBackgroundResource(
+            when (product?.red_yellow_green?.toLowerCase()) {
+                "red" -> R.color.red
+                "yellow" -> R.color.yellow
+                "green" -> R.color.green
+                else -> android.R.color.transparent
+            }
+        )
+
+        img_drink_icon.setBackgroundResource(
+            when (product?.booze_type?.toLowerCase()) {
+                "beer" -> R.drawable.ic_beer
+                "wine" -> R.drawable.ic_wine
+                "liquor" -> R.drawable.ic_liquor
+                else -> 0
+            }
+        )
+
+        btn_back.setOnClickListener { finish() }
     }
 
     companion object {

@@ -37,7 +37,7 @@
             tools:srcCompat="@drawable/ic_beer" />
 
         <TextView
-            android:id="@+id/title_text"
+            android:id="@+id/tv_title"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="32dp"
@@ -48,23 +48,23 @@
             android:textSize="20sp"
             android:textStyle="bold"
             app:layout_constraintVertical_chainStyle="packed"
-            app:layout_constraintBottom_toTopOf="@id/status_text"
+            app:layout_constraintBottom_toTopOf="@id/tv_company"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/img_drink_icon"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="Product name" />
 
         <TextView
-            android:id="@+id/status_text"
+            android:id="@+id/tv_company"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:ellipsize="end"
             android:maxLines="2"
             app:layout_constraintVertical_chainStyle="packed"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@id/title_text"
-            app:layout_constraintStart_toStartOf="@id/title_text"
-            app:layout_constraintTop_toBottomOf="@id/title_text"
-            tools:text="Is Vegan Friendly" />
+            app:layout_constraintEnd_toEndOf="@id/tv_title"
+            app:layout_constraintStart_toStartOf="@id/tv_title"
+            app:layout_constraintTop_toBottomOf="@id/tv_title"
+            tools:text="by Some Brewery" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.cardview.widget.CardView>
