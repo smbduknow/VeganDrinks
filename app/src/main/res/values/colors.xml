@@ -7,11 +7,11 @@
     <color name="blue_main">#8ACCE1</color>
     <color name="blue_soft">#f5FdFF</color>
 
-    <color name="green">#A4DCBA</color>
+    <color name="green">#A4CCAA</color>
     <color name="green_light">#D0F1DD</color>
-    <color name="yellow">#FFD089</color>
+    <color name="yellow">#FFC079</color>
     <color name="yellow_light">#fae2a0</color>
-    <color name="red">#FFB1B1</color>
+    <color name="red">#FFA1A1</color>
     <color name="red_light">#ffc7c7</color>
 
     <color name="black">#111111</color>
