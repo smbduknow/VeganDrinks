@@ -34,11 +34,11 @@
 
     <androidx.appcompat.widget.AppCompatImageButton
         android:id="@+id/btn_back"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
         android:layout_marginStart="24dp"
-        android:layout_marginTop="32dp"
-        android:background="?selectableItemBackgroundBorderless"
+        android:layout_marginTop="56dp"
+        android:background="?selectableItemBackground"
         android:clickable="true"
         android:focusable="true"
         android:padding="8dp"
@@ -47,51 +47,81 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
+        android:id="@+id/tv_label_status"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="24dp"
+        android:text="status"
+        android:textColor="@android:color/white"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/btn_back" />
+    <TextView
         android:id="@+id/tv_status"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
-        android:layout_marginTop="32dp"
         android:textAllCaps="true"
         android:textColor="@android:color/white"
         android:textSize="32sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btn_back"
+        app:layout_constraintTop_toBottomOf="@+id/tv_label_status"
         tools:text="Vegan Friendly" />
 
+    <TextView
+        android:id="@+id/tv_label_company"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="24dp"
+        android:text="by"
+        android:textColor="@android:color/white"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_status" />
     <TextView
         android:id="@+id/tv_company"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
         android:textColor="@android:color/white"
         android:textSize="22sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toStartOf="@id/img_drink_icon"
         app:layout_constraintStart_toStartOf="@id/tv_status"
-        app:layout_constraintTop_toBottomOf="@+id/tv_status"
-        tools:text="Vegan Friendly" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_label_company"
+        tools:text="Brewery Name" />
 
+    <TextView
+        android:id="@+id/tv_label_country"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="24dp"
+        android:text="country"
+        android:textColor="@android:color/white"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_company" />
     <TextView
         android:id="@+id/tv_country"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
         android:textColor="@android:color/white"
         android:textSize="22sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toStartOf="@id/img_drink_icon"
         app:layout_constraintStart_toStartOf="@id/tv_company"
-        app:layout_constraintTop_toBottomOf="@+id/tv_company"
+        app:layout_constraintTop_toBottomOf="@+id/tv_label_country"
         tools:text="Vegan Friendly" />
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/img_drink_icon"
         android:layout_width="160dp"
-        android:layout_height="320dp"
+        android:layout_height="0dp"
         android:layout_marginEnd="32dp"
+        android:layout_marginTop="24dp"
         android:adjustViewBounds="true"
+        android:scaleType="fitCenter"
+        app:layout_constraintTop_toBottomOf="@id/tv_status"
         app:layout_constraintBottom_toBottomOf="@+id/title_text"
         app:layout_constraintEnd_toEndOf="parent"
         tools:srcCompat="@drawable/ic_beer" />
