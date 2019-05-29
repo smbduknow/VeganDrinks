@@ -29,9 +29,9 @@ class DrinkListAdapter : RecyclerView.Adapter<DrinkListAdapter.ViewHolder>() {
         holder.companyText.text = "by ${item.company?.company_name}"
         holder.statusLabel.setBackgroundResource(
             when (item.red_yellow_green.toLowerCase()) {
-                "red" -> R.color.red
-                "yellow" -> R.color.yellow
-                "green" -> R.color.green
+                "red" -> R.drawable.bg_red
+                "yellow" -> R.drawable.bg_yellow
+                "green" -> R.drawable.bg_green
                 else -> android.R.color.transparent
             }
         )

@@ -17,9 +17,9 @@
 
         <View
             android:id="@+id/drink_status"
-            android:layout_width="16dp"
+            android:layout_width="92dp"
             android:layout_height="0dp"
-            android:background="@color/green"
+            android:background="@drawable/bg_green"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -28,11 +28,10 @@
             android:id="@+id/img_drink_icon"
             android:layout_width="36dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="32dp"
-            android:layout_marginEnd="32dp"
             android:adjustViewBounds="true"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintStart_toStartOf="@id/drink_status"
+            app:layout_constraintEnd_toEndOf="@id/drink_status"
             app:layout_constraintTop_toTopOf="parent"
             tools:srcCompat="@drawable/ic_beer" />
 
@@ -40,8 +39,8 @@
             android:id="@+id/tv_title"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="32dp"
-            android:layout_marginEnd="32dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="8dp"
             android:ellipsize="end"
             android:maxLines="2"
             android:textColor="@color/black"
@@ -49,8 +48,8 @@
             android:textStyle="bold"
             app:layout_constraintVertical_chainStyle="packed"
             app:layout_constraintBottom_toTopOf="@id/tv_company"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/img_drink_icon"
+            app:layout_constraintEnd_toStartOf="@id/img_forward"
+            app:layout_constraintStart_toEndOf="@id/drink_status"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="Product name" />
 
@@ -66,5 +65,20 @@
             app:layout_constraintStart_toStartOf="@id/tv_title"
             app:layout_constraintTop_toBottomOf="@id/tv_title"
             tools:text="by Some Brewery" />
+
+        <androidx.appcompat.widget.AppCompatImageButton
+            android:id="@+id/img_forward"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_marginEnd="8dp"
+            android:background="?selectableItemBackground"
+            android:clickable="true"
+            android:focusable="true"
+            android:padding="8dp"
+            android:src="@drawable/ic_forward"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.cardview.widget.CardView>
