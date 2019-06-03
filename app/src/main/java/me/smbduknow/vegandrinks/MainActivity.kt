@@ -7,8 +7,8 @@ import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.activity_main.*
@@ -26,7 +26,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        suggestionListView.apply {
+        rvItems.apply {
             setHasFixedSize(true)
             layoutManager = LinearLayoutManager(this@MainActivity)
             adapter = suggestionAdapter
@@ -48,16 +48,36 @@ class MainActivity : AppCompatActivity() {
         }
 
         vm.viewState.observeNotNull(this) { state ->
-            when(state) {
+            when (state) {
                 is MainViewModel.ViewState.Content -> setContent(state.items)
-                else -> Toast.makeText(this, state.javaClass.simpleName, Toast.LENGTH_LONG).show()
+                is MainViewModel.ViewState.Initial -> setEmpty("Is your fav beer vegan friendly?")
+                is MainViewModel.ViewState.NoResults -> setEmpty("Nothing was found. Please try again")
+                is MainViewModel.ViewState.NoConnection -> setEmpty("Please check your connection")
+                is MainViewModel.ViewState.Error -> setEmpty("Something went wrong :(")
+                is MainViewModel.ViewState.Loading -> setLoading()
             }
         }
     }
 
     private fun setContent(items: List<Product>) {
+        rvItems.isVisible = true
+        progressBar.isVisible = false
+        tvPlaceholder.isVisible = false
         suggestionAdapter.items = items
         suggestionAdapter.notifyDataSetChanged()
+    }
+
+    private fun setEmpty(message: String) {
+        rvItems.isVisible = false
+        progressBar.isVisible = false
+        tvPlaceholder.isVisible = true
+        tvPlaceholder.text = message
+    }
+
+    private fun setLoading() {
+        rvItems.isVisible = false
+        progressBar.isVisible = true
+        tvPlaceholder.isVisible = false
     }
 
     private fun hideKeyboardFrom(view: View) {
