@@ -1,6 +1,7 @@
 package me.smbduknow.vegandrinks
 
 import android.app.Activity
+import android.os.Build
 import android.os.Bundle
 import android.view.KeyEvent
 import android.view.View
@@ -30,6 +31,9 @@ class MainActivity : AppCompatActivity() {
             setHasFixedSize(true)
             layoutManager = LinearLayoutManager(this@MainActivity)
             adapter = suggestionAdapter
+            viewTreeObserver.addOnScrollChangedListener {
+                header.isSelected = canScrollVertically(-1)
+            }
         }
 
         search_edit.setOnEditorActionListener(object : TextView.OnEditorActionListener {

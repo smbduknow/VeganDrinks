@@ -9,11 +9,12 @@
     tools:context=".MainActivity">
 
     <FrameLayout
+        android:id="@+id/header"
         android:layout_width="match_parent"
         android:layout_height="80dp"
         android:layout_gravity="top"
         android:background="@color/white"
-        android:elevation="16dp">
+        android:stateListAnimator="@animator/elevation_animator">
 
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
