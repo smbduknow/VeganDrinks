@@ -1,6 +1,8 @@
 package me.smbduknow.vegandrinks.data
 
 import io.reactivex.schedulers.Schedulers
+import me.smbduknow.vegandrinks.Application
+import me.smbduknow.vegandrinks.data.network.ConnectivityInterceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -20,6 +22,7 @@ object RemoteDataSource {
 
         val httpClient = OkHttpClient.Builder()
             .addInterceptor(loggingInterceptor)
+            .addInterceptor(ConnectivityInterceptor(Application.instance))
             .build()
 
         val retrofit = Retrofit.Builder()
