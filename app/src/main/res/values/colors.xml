@@ -17,6 +17,8 @@
     <color name="red_light">#E7302A</color>
 
     <color name="white">#ffffff</color>
+    <color name="white_alpha">#99ffffff</color>
+
     <color name="black">#111111</color>
     <color name="gray">#CDCACA</color>
     <color name="gray_light">#F9F9F9</color>
