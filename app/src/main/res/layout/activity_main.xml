@@ -51,7 +51,8 @@
         android:layout_height="match_parent"
         android:gravity="center"
         android:padding="16dp"
-        android:textSize="18sp"
+        android:textSize="22sp"
+        android:textColor="#bbbbbb"
         tools:text="No Content" />
 
     <ProgressBar
