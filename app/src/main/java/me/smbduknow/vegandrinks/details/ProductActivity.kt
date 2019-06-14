@@ -2,7 +2,9 @@ package me.smbduknow.vegandrinks.details
 
 import android.content.Context
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
+import android.view.MenuItem
 import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_product.*
@@ -18,6 +20,14 @@ class ProductActivity : AppCompatActivity() {
         window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
 
         val product = intent.getParcelableExtra<Product?>("product")
+
+        setSupportActionBar(toolbar)
+        supportActionBar?.apply {
+            setDisplayHomeAsUpEnabled(true)
+            title = product?.status
+        }
+        collapsing_toolbar.scrimAnimationDuration = 200
+        collapsing_toolbar.setExpandedTitleColor(Color.parseColor("#00FFFFFF"))
 
         title_text.text = product?.product_name
         tv_company.text = product?.company?.company_name
@@ -42,9 +52,18 @@ class ProductActivity : AppCompatActivity() {
                 else -> 0
             }
         )
-
-        btn_back.setOnClickListener { finish() }
     }
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean =
+        when (item?.itemId) {
+            android.R.id.home -> {
+                finish()
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
+
+    override fun onBackPressed() = finish()
 
     companion object {
 
