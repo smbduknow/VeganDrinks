@@ -5,6 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.item_search_result.view.*
 import me.smbduknow.vegandrinks.data.model.Product
@@ -27,6 +28,18 @@ class DrinkListAdapter : RecyclerView.Adapter<DrinkListAdapter.ViewHolder>() {
         val item = items[pos]
         holder.titleView.text = item.product_name
         holder.companyText.text = "by ${item.company?.company_name}"
+        holder.statusText.text = item.status
+        holder.statusText.setTextColor(
+            ContextCompat.getColor(
+                holder.itemView.context,
+                when (item.red_yellow_green.toLowerCase()) {
+                    "red" -> R.color.red_dark
+                    "yellow" -> R.color.yellow_dark
+                    "green" -> R.color.green_dark
+                    else -> R.color.black
+                }
+            )
+        )
         holder.statusLabel.setBackgroundResource(
             when (item.red_yellow_green.toLowerCase()) {
                 "red" -> R.drawable.bg_red
@@ -49,6 +62,7 @@ class DrinkListAdapter : RecyclerView.Adapter<DrinkListAdapter.ViewHolder>() {
 
         val titleView: TextView by lazy { itemView.tv_title }
         val companyText: TextView by lazy { itemView.tv_company }
+        val statusText: TextView by lazy { itemView.tv_drink_status }
         val statusLabel: View by lazy { itemView.drink_status }
         val iconView: ImageView by lazy { itemView.img_drink_icon }
 
