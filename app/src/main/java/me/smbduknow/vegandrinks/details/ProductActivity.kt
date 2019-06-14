@@ -17,7 +17,8 @@ class ProductActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_product)
 
-        window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
+        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
+        window.statusBarColor = Color.TRANSPARENT
 
         val product = intent.getParcelableExtra<Product?>("product")
 
@@ -28,6 +29,8 @@ class ProductActivity : AppCompatActivity() {
         }
         collapsing_toolbar.scrimAnimationDuration = 200
         collapsing_toolbar.setExpandedTitleColor(Color.parseColor("#00FFFFFF"))
+        collapsing_toolbar.setContentScrimResource(product?.red_yellow_green.statusToColor())
+        collapsing_toolbar.setStatusBarScrimResource(product?.red_yellow_green.statusToColor())
 
         title_text.text = product?.product_name
         tv_company.text = product?.company?.company_name
@@ -64,6 +67,13 @@ class ProductActivity : AppCompatActivity() {
         }
 
     override fun onBackPressed() = finish()
+
+    private fun String?.statusToColor() = when (this?.toLowerCase()) {
+        "red" -> R.color.red_medium
+        "yellow" -> R.color.yellow_medium
+        "green" -> R.color.green_medium
+        else -> android.R.color.transparent
+    }
 
     companion object {
 
