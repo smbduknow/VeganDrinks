@@ -8,8 +8,8 @@ android {
         applicationId "me.smbduknow.vegandrinks"
         minSdkVersion 21
         targetSdkVersion 28
-        versionCode 3
-        versionName "0.1-alpha"
+        versionCode 4
+        versionName "0.1"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
