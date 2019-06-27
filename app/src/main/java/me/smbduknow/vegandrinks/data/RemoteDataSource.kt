@@ -35,6 +35,9 @@ object RemoteDataSource {
         API = retrofit.create(BarnivoreApi::class.java)
     }
 
+    fun getAutocompleteResults(query: String) = API.autocomplete(query)
+        .subscribeOn(Schedulers.io())
+
     fun getSearchResults(query: String) = API.search(query)
         .subscribeOn(Schedulers.io())
         .map { list -> list.map { it.company } }

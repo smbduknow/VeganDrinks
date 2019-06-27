@@ -8,6 +8,11 @@ import retrofit2.http.Query
 
 interface BarnivoreApi {
 
+    @GET("autocomplete.json")
+    fun autocomplete(
+        @Query("term") query: String
+    ): Single<List<String>>
+
     @GET("search.json")
     fun search(
         @Query("keyword") query: String
