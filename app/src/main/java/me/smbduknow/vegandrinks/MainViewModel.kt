@@ -2,8 +2,10 @@ package me.smbduknow.vegandrinks
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import io.reactivex.Observable
-import io.reactivex.subjects.BehaviorSubject
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import me.smbduknow.vegandrinks.data.SearchRepository
 import me.smbduknow.vegandrinks.data.exception.NoConnectionException
 import me.smbduknow.vegandrinks.data.model.Product
@@ -12,25 +14,31 @@ class MainViewModel : ViewModel() {
 
     val viewState = MutableLiveData<ViewState>()
 
-    private val onSearchSubmitSubject = BehaviorSubject.create<String>()
+    private val onSearchSubmitLiveData = MutableLiveData<String>()
 
     private val repo = SearchRepository()
 
-    private val disposable = Observable.concat(
-        Observable.just<ViewState>(ViewState.Initial),
-        onSearchSubmitSubject.switchMap(::doSearch)
-    )
-        .subscribe { viewState.postValue(it) }
+    init {
+        viewState.value = ViewState.Initial
 
-    fun onSubmit(query: String) = onSearchSubmitSubject.onNext(query)
+        onSearchSubmitLiveData.observeForever { query ->
+            viewState.value = ViewState.Loading
 
-    override fun onCleared() = disposable.dispose()
+            GlobalScope.launch {
+                viewState.postValue(doSearch(query))
+            }
+        }
+    }
 
-    private fun doSearch(q: String) = repo.search(q)
-        .toObservable()
-        .map(::handleResult)
-        .onErrorReturn(::handleError)
-        .startWith(ViewState.Loading)
+    fun onSubmit(query: String) {
+        onSearchSubmitLiveData.value = query
+    }
+
+    private suspend fun doSearch(q: String): ViewState =
+        withContext(Dispatchers.IO) {
+            val products = repo.search(q)
+            handleResult(products)
+        }
 
     private fun handleResult(items: List<Product>) = when {
         items.isNotEmpty() -> ViewState.Content(items)
