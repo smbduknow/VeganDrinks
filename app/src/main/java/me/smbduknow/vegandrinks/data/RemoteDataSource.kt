@@ -1,13 +1,14 @@
 package me.smbduknow.vegandrinks.data
 
-import io.reactivex.schedulers.Schedulers
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import me.smbduknow.vegandrinks.Application
 import me.smbduknow.vegandrinks.data.network.ConnectivityInterceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
-import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.create
 
 object RemoteDataSource {
 
@@ -27,22 +28,23 @@ object RemoteDataSource {
 
         val retrofit = Retrofit.Builder()
             .baseUrl(API_URL)
-            .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
             .addConverterFactory(GsonConverterFactory.create())
             .client(httpClient)
             .build()
 
-        API = retrofit.create(BarnivoreApi::class.java)
+        API = retrofit.create()
     }
 
-    fun getAutocompleteResults(query: String) = API.autocomplete(query)
-        .subscribeOn(Schedulers.io())
+    suspend fun getAutocompleteResults(query: String) = withContext(Dispatchers.IO) {
+        API.autocomplete(query)
+    }
 
-    fun getSearchResults(query: String) = API.search(query)
-        .subscribeOn(Schedulers.io())
-        .map { list -> list.map { it.company } }
+    suspend fun getSearchResults(query: String) = withContext(Dispatchers.IO) {
+        API.search(query)
+            .map { it.company }
+    }
 
-    fun getCompanyDetails(id: Int) = API.getCompany(id)
-        .subscribeOn(Schedulers.io())
-        .map { it.company }
+    suspend fun getCompanyDetails(id: Int) = withContext(Dispatchers.IO) {
+        API.getCompany(id).company
+    }
 }

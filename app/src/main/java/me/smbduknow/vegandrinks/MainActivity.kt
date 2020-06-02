@@ -1,16 +1,15 @@
 package me.smbduknow.vegandrinks
 
 import android.app.Activity
-import android.os.Build
 import android.os.Bundle
 import android.view.KeyEvent
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.TextView
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
-import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.activity_main.*
 import me.smbduknow.vegandrinks.common.observeNotNull
@@ -19,7 +18,7 @@ import me.smbduknow.vegandrinks.details.ProductActivity
 
 class MainActivity : AppCompatActivity() {
 
-    private val vm by lazy { ViewModelProviders.of(this)[MainViewModel::class.java] }
+    private val vm: MainViewModel by viewModels()
 
     private val suggestionAdapter by lazy { DrinkListAdapter() }
 
