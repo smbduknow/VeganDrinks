@@ -1,44 +1,41 @@
 package me.smbduknow.vegandrinks
 
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.asFlow
+import androidx.lifecycle.asLiveData
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.flow.*
+import me.smbduknow.vegandrinks.common.SingleLiveEvent
 import me.smbduknow.vegandrinks.data.SearchRepository
 import me.smbduknow.vegandrinks.data.exception.NoConnectionException
 import me.smbduknow.vegandrinks.data.model.Product
 
 class MainViewModel : ViewModel() {
 
-    val viewState = MutableLiveData<ViewState>()
+    private val repository = SearchRepository()
 
-    private val onSearchSubmitLiveData = MutableLiveData<String>()
+    val viewState = flowOf<ViewState>(ViewState.Initial)
+        .onCompletion { emitAll(actionFlow) }
+        .asLiveData(Dispatchers.Default)
 
-    private val repo = SearchRepository()
+    private val viewAction = SingleLiveEvent<ViewAction>()
 
-    init {
-        viewState.value = ViewState.Initial
+    private val actionFlow = viewAction.asFlow()
+        .flatMapLatest(::handleAction)
 
-        onSearchSubmitLiveData.observeForever { query ->
-            viewState.value = ViewState.Loading
-
-            GlobalScope.launch {
-                viewState.postValue(doSearch(query))
-            }
-        }
+    fun acceptAction(action: ViewAction) {
+        viewAction.value = action
     }
 
-    fun onSubmit(query: String) {
-        onSearchSubmitLiveData.value = query
-    }
+    private suspend fun doSearch(query: String): Flow<ViewState> =
+        flow { emit(repository.search(query)) }
+            .map { result -> handleResult(result) }
+            .catch { error -> emit(handleError(error)) }
+            .onStart { emit(ViewState.Loading) }
 
-    private suspend fun doSearch(q: String): ViewState =
-        withContext(Dispatchers.IO) {
-            val products = repo.search(q)
-            handleResult(products)
-        }
+    private suspend fun handleAction(action: ViewAction): Flow<ViewState> = when (action) {
+        is ViewAction.StartSearch -> doSearch(action.query)
+    }
 
     private fun handleResult(items: List<Product>) = when {
         items.isNotEmpty() -> ViewState.Content(items)
@@ -57,5 +54,9 @@ class MainViewModel : ViewModel() {
         object NoConnection : ViewState()
         object NoResults : ViewState()
         object Error : ViewState()
+    }
+
+    sealed class ViewAction {
+        class StartSearch(val query: String) : ViewAction()
     }
 }
