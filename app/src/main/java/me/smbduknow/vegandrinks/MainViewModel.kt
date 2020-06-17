@@ -28,7 +28,7 @@ class MainViewModel : ViewModel() {
     }
 
     private suspend fun doSearch(query: String): Flow<ViewState> =
-        flow { emit(repository.search(query)) }
+        repository.search(query)
             .map { result -> handleResult(result) }
             .catch { error -> emit(handleError(error)) }
             .onStart { emit(ViewState.Loading) }
