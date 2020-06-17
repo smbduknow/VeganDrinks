@@ -12,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.activity_main.*
+import me.smbduknow.vegandrinks.MainViewModel.ViewState
 import me.smbduknow.vegandrinks.common.observeNotNull
 import me.smbduknow.vegandrinks.data.model.Product
 import me.smbduknow.vegandrinks.details.ProductActivity
@@ -38,7 +39,8 @@ class MainActivity : AppCompatActivity() {
         search_edit.setOnEditorActionListener(object : TextView.OnEditorActionListener {
             override fun onEditorAction(v: TextView, actionId: Int, event: KeyEvent?): Boolean {
                 if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                    vm.onSubmit(v.text?.toString() ?: "")
+                    val query = v.text?.toString() ?: ""
+                    vm.acceptAction(MainViewModel.ViewAction.StartSearch(query))
                     hideKeyboardFrom(v)
                     return true
                 }
@@ -52,12 +54,12 @@ class MainActivity : AppCompatActivity() {
 
         vm.viewState.observeNotNull(this) { state ->
             when (state) {
-                is MainViewModel.ViewState.Content -> setContent(state.items)
-                is MainViewModel.ViewState.Initial -> setEmpty("Is your fav beer vegan friendly?")
-                is MainViewModel.ViewState.NoResults -> setEmpty("Nothing was found. Please try again")
-                is MainViewModel.ViewState.NoConnection -> setEmpty("Please check your connection")
-                is MainViewModel.ViewState.Error -> setEmpty("Something went wrong :(")
-                is MainViewModel.ViewState.Loading -> setLoading()
+                is ViewState.Content -> setContent(state.items)
+                is ViewState.Initial -> setEmpty("Is your fav beer vegan friendly?")
+                is ViewState.NoResults -> setEmpty("Nothing was found. Please try again")
+                is ViewState.NoConnection -> setEmpty("Please check your connection")
+                is ViewState.Error -> setEmpty("Something went wrong :(")
+                is ViewState.Loading -> setLoading()
             }
         }
     }
