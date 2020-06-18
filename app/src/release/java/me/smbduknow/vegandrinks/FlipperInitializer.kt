@@ -1,7 +1,7 @@
 package me.smbduknow.vegandrinks
 
 import android.content.Context
-import me.smbduknow.vegandrinks.BuildConfig
+import okhttp3.Interceptor
 
 object FlipperInitializer {
 
