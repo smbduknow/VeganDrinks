@@ -3,6 +3,7 @@ package me.smbduknow.vegandrinks.data
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import me.smbduknow.vegandrinks.Application
+import me.smbduknow.vegandrinks.FlipperInitializer
 import me.smbduknow.vegandrinks.data.network.ConnectivityInterceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -24,6 +25,7 @@ object RemoteDataSource {
         val httpClient = OkHttpClient.Builder()
             .addInterceptor(loggingInterceptor)
             .addInterceptor(ConnectivityInterceptor(Application.instance))
+            .addInterceptor(FlipperInitializer.interceptor)
             .build()
 
         val retrofit = Retrofit.Builder()
