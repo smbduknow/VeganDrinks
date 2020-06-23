@@ -1,4 +1,4 @@
-package me.smbduknow.vegandrinks
+package me.smbduknow.vegandrinks.search
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asFlow
@@ -10,11 +10,13 @@ import me.smbduknow.vegandrinks.data.SearchRepository
 import me.smbduknow.vegandrinks.data.exception.NoConnectionException
 import me.smbduknow.vegandrinks.data.model.Product
 
-class MainViewModel : ViewModel() {
+class SearchViewModel : ViewModel() {
 
     private val repository = SearchRepository()
 
-    val viewState = flowOf<ViewState>(ViewState.Initial)
+    val viewState = flowOf<ViewState>(
+        ViewState.Initial
+    )
         .onCompletion { emitAll(actionFlow) }
         .asLiveData(Dispatchers.Default)
 
@@ -38,7 +40,9 @@ class MainViewModel : ViewModel() {
     }
 
     private fun handleResult(items: List<Product>) = when {
-        items.isNotEmpty() -> ViewState.Content(items)
+        items.isNotEmpty() -> ViewState.Content(
+            items
+        )
         else -> ViewState.NoResults
     }
 

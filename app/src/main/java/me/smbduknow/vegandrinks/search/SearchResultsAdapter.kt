@@ -1,4 +1,4 @@
-package me.smbduknow.vegandrinks
+package me.smbduknow.vegandrinks.search
 
 import android.view.LayoutInflater
 import android.view.View
@@ -8,9 +8,10 @@ import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.item_search_result.view.*
+import me.smbduknow.vegandrinks.R
 import me.smbduknow.vegandrinks.data.model.Product
 
-class DrinkListAdapter : RecyclerView.Adapter<DrinkListAdapter.ViewHolder>() {
+class SearchResultsAdapter : RecyclerView.Adapter<SearchResultsAdapter.ViewHolder>() {
 
     var items = emptyList<Product>()
     var onItemClickListener: ((Product) -> Unit)? = null

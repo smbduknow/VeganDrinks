@@ -1,4 +1,4 @@
-package me.smbduknow.vegandrinks
+package me.smbduknow.vegandrinks.search
 
 import android.app.Activity
 import android.os.Bundle
@@ -12,16 +12,17 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.activity_main.*
-import me.smbduknow.vegandrinks.MainViewModel.ViewState
+import me.smbduknow.vegandrinks.R
 import me.smbduknow.vegandrinks.common.observeNotNull
 import me.smbduknow.vegandrinks.data.model.Product
 import me.smbduknow.vegandrinks.details.ProductActivity
+import me.smbduknow.vegandrinks.search.SearchViewModel.ViewState
 
-class MainActivity : AppCompatActivity() {
+class SearchActivity : AppCompatActivity() {
 
-    private val vm: MainViewModel by viewModels()
+    private val vm: SearchViewModel by viewModels()
 
-    private val suggestionAdapter by lazy { DrinkListAdapter() }
+    private val suggestionAdapter by lazy { SearchResultsAdapter() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,7 +30,7 @@ class MainActivity : AppCompatActivity() {
 
         rvItems.apply {
             setHasFixedSize(true)
-            layoutManager = LinearLayoutManager(this@MainActivity)
+            layoutManager = LinearLayoutManager(this@SearchActivity)
             adapter = suggestionAdapter
             viewTreeObserver.addOnScrollChangedListener {
                 header.isSelected = canScrollVertically(-1)
@@ -40,7 +41,11 @@ class MainActivity : AppCompatActivity() {
             override fun onEditorAction(v: TextView, actionId: Int, event: KeyEvent?): Boolean {
                 if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                     val query = v.text?.toString() ?: ""
-                    vm.acceptAction(MainViewModel.ViewAction.StartSearch(query))
+                    vm.acceptAction(
+                        SearchViewModel.ViewAction.StartSearch(
+                            query
+                        )
+                    )
                     hideKeyboardFrom(v)
                     return true
                 }
