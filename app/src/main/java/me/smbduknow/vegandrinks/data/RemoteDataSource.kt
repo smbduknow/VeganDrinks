@@ -4,6 +4,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import me.smbduknow.vegandrinks.Application
 import me.smbduknow.vegandrinks.FlipperInitializer
+import me.smbduknow.vegandrinks.data.model.Company
 import me.smbduknow.vegandrinks.data.network.ConnectivityInterceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -41,12 +42,12 @@ object RemoteDataSource {
         API.autocomplete(query)
     }
 
-    suspend fun getSearchResults(query: String) = withContext(Dispatchers.IO) {
+    suspend fun getSearchResults(query: String): List<Company> = withContext(Dispatchers.IO) {
         API.search(query)
             .map { it.company }
     }
 
-    suspend fun getCompanyDetails(id: Int) = withContext(Dispatchers.IO) {
+    suspend fun getCompanyDetails(id: Int): Company = withContext(Dispatchers.IO) {
         API.getCompany(id).company
     }
 }
