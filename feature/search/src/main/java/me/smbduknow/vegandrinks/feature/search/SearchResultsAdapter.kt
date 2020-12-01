@@ -1,4 +1,4 @@
-package me.smbduknow.vegandrinks.search
+package me.smbduknow.vegandrinks.feature.search
 
 import android.view.LayoutInflater
 import android.view.View
@@ -7,11 +7,11 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
+import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.item_search_result.view.*
-import me.smbduknow.vegandrinks.R
-import me.smbduknow.vegandrinks.data.model.Product
+import me.smbduknow.vegandrinks.feature.search.domain.model.Product
 
-class SearchResultsAdapter : RecyclerView.Adapter<SearchResultsAdapter.ViewHolder>() {
+internal class SearchResultsAdapter : RecyclerView.Adapter<SearchResultsAdapter.ViewHolder>() {
 
     var items = emptyList<Product>()
     var onItemClickListener: ((Product) -> Unit)? = null
@@ -19,7 +19,8 @@ class SearchResultsAdapter : RecyclerView.Adapter<SearchResultsAdapter.ViewHolde
     override fun getItemCount(): Int = items.size
 
     override fun onCreateViewHolder(parent: ViewGroup, pos: Int): ViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_search_result, parent, false)
+        val view =
+            LayoutInflater.from(parent.context).inflate(R.layout.item_search_result, parent, false)
         return ViewHolder(view) {
             onItemClickListener?.invoke(items[it])
         }
@@ -27,39 +28,40 @@ class SearchResultsAdapter : RecyclerView.Adapter<SearchResultsAdapter.ViewHolde
 
     override fun onBindViewHolder(holder: ViewHolder, pos: Int) {
         val item = items[pos]
-        holder.titleView.text = item.product_name
-        holder.companyText.text = "by ${item.company?.company_name}"
-        holder.statusText.text = item.status
+        holder.titleView.text = item.name
+        holder.companyText.text = "by ${item.company?.name}"
+        holder.statusText.text = "TODO"
         holder.statusText.setTextColor(
             ContextCompat.getColor(
                 holder.itemView.context,
-                when (item.red_yellow_green.toLowerCase()) {
-                    "red" -> R.color.red_dark
-                    "yellow" -> R.color.yellow_dark
-                    "green" -> R.color.green_dark
-                    else -> R.color.black
+                when (item.status) {
+                    Product.Status.VEGAN -> R.color.green_dark
+                    Product.Status.NOT_VEGAN -> R.color.red_dark
+                    Product.Status.UNKNOWN -> R.color.yellow_dark
                 }
             )
         )
         holder.statusLabel.setBackgroundResource(
-            when (item.red_yellow_green.toLowerCase()) {
-                "red" -> R.drawable.bg_red
-                "yellow" -> R.drawable.bg_yellow
-                "green" -> R.drawable.bg_green
-                else -> android.R.color.transparent
+            when (item.status) {
+                Product.Status.VEGAN -> R.drawable.bg_green
+                Product.Status.NOT_VEGAN -> R.drawable.bg_red
+                Product.Status.UNKNOWN -> R.drawable.bg_yellow
             }
         )
         holder.iconView.setBackgroundResource(
-            when (item.booze_type.toLowerCase()) {
-                "beer" -> R.drawable.ic_beer
-                "wine" -> R.drawable.ic_wine
-                "liquor" -> R.drawable.ic_liquor
-                else -> 0
+            when (item.type) {
+                Product.Type.BEER -> R.drawable.ic_beer
+                Product.Type.WINE -> R.drawable.ic_wine
+                Product.Type.LIQUOR -> R.drawable.ic_liquor
+                Product.Type.OTHER -> 0
             }
         )
     }
 
-    class ViewHolder(itemView: View, clickListener: (pos: Int) -> Unit) : RecyclerView.ViewHolder(itemView) {
+    class ViewHolder(
+        override val containerView: View,
+        clickListener: (pos: Int) -> Unit
+    ) : RecyclerView.ViewHolder(containerView), LayoutContainer {
 
         val titleView: TextView by lazy { itemView.tv_title }
         val companyText: TextView by lazy { itemView.tv_company }
