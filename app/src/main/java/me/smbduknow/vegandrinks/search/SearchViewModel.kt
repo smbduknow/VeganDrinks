@@ -19,7 +19,7 @@ class SearchViewModel : ViewModel() {
 
     private fun doSearch(query: String) {
         viewModelScope.launch {
-            repository.searchResults.value = repository.search(query)
+            repository.search(query)
         }
     }
 }

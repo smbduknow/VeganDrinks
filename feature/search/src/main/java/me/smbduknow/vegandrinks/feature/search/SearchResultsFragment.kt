@@ -8,7 +8,6 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import kotlinx.android.synthetic.main.fragment_search_results.*
 import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.launch
 import me.smbduknow.vegandrinks.feature.search.domain.model.Product
 import me.smbduknow.vegandrinks.feature.search.presentation.Action
 import me.smbduknow.vegandrinks.feature.search.presentation.PresentationModel
@@ -23,16 +22,7 @@ class SearchResultsFragment : Fragment(R.layout.fragment_search_results) {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        suggestionAdapter.onItemClickListener = { product ->
-            vm.dispatch(Action.SelectProduct(product))
-        }
-
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        rvItems.adapter = suggestionAdapter
-
-        lifecycleScope.launch {
+        lifecycleScope.launchWhenStarted {
             vm.observe().collect { state ->
                 when (state) {
                     is ViewState.Content -> setContent(state.items)
@@ -44,6 +34,15 @@ class SearchResultsFragment : Fragment(R.layout.fragment_search_results) {
                 }
             }
         }
+
+        suggestionAdapter.onItemClickListener = { product ->
+            vm.dispatch(Action.SelectProduct(product))
+        }
+
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        rvItems.adapter = suggestionAdapter
     }
 
     private fun setContent(items: List<Product>) {
