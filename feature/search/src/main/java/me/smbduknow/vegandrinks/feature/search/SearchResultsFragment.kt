@@ -41,6 +41,10 @@ class SearchResultsFragment : Fragment(R.layout.fragment_search_results) {
 
     }
 
+    fun startSearch(query: String) {
+        vm.dispatch(Action.StartSearch(query))
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         rvItems.adapter = suggestionAdapter
     }

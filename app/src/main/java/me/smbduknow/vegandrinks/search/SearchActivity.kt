@@ -8,21 +8,21 @@ import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.TextView
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_main.*
 import me.smbduknow.vegandrinks.R
+import me.smbduknow.vegandrinks.feature.search.SearchResultsFragment
 
 class SearchActivity : AppCompatActivity() {
-
-    private val vm: SearchViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        val searchResultsFragment = supportFragmentManager.findFragmentById(R.id.searchResults)
+
         search_edit.onSubmit { text ->
-            vm.dispatch(SearchAction.StartSearch(text))
+            (searchResultsFragment as? SearchResultsFragment)?.startSearch(text)
         }
     }
 
