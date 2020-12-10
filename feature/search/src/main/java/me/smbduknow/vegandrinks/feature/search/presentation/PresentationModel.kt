@@ -1,6 +1,5 @@
 package me.smbduknow.vegandrinks.feature.search.presentation
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.channels.Channel
@@ -15,40 +14,41 @@ internal class PresentationModel : ViewModel() {
 
     private val actionChannel = Channel<Action>()
 
-    private val viewState = observeActions()
-        .onEach { Log.d("FLOW", it.toString()) }
-        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(), ViewState.Initial)
-
-    fun observe(): Flow<ViewState> = viewState
+    val viewState = observeActions()
+        .stateIn(viewModelScope, SharingStarted.Lazily, ViewState.Initial)
 
     fun dispatch(action: Action) {
         actionChannel.offer(action)
     }
 
-    private fun observeSearch(query: String): Flow<Action> =
-        repository.search(query)
-            .map { Action.Result(it) }
-            .catch { Action.Error(it) }
+    private fun observeActions(): Flow<ViewState> =
+        actionChannel.consumeAsFlow()
+            .mapNotNull { action -> execute(viewState.value, action) }
+            .map { action -> reduce(viewState.value, action)  }
 
-    private fun observeActions(): Flow<ViewState> {
-        return actionChannel.consumeAsFlow()
-            .onEach { action ->
-               if(action is Action.StartSearch) {
-                   viewModelScope.launch {
-                       observeSearch(action.query)
-                           .collect { dispatch(it) }
-                   }
-               }
+    private fun reduce(currentState: ViewState, action: Action): ViewState =
+        when (action) {
+            is Action.StartSearch -> ViewState.Loading
+            is Action.Result -> mapResultItems(action.data)
+            is Action.Error -> ViewState.Error
+            else -> currentState
+        }
+
+    private fun execute(currentState: ViewState, action: Action): Action? {
+        if (action is Action.StartSearch) {
+            viewModelScope.launch {
+                dispatch(doSearch(action.query))
             }
-            .map { // reducer
-                when (it) {
-                    is Action.StartSearch -> ViewState.Loading
-                    is Action.Result -> mapResultItems(it.data)
-                    is Action.Error -> ViewState.Error
-                    is Action.SelectProduct -> viewState.value
-                }
-            }
+        }
+        return action.takeUnless { it is Action.SelectProduct }
     }
+
+    private suspend fun doSearch(query: String): Action =
+        try {
+            repository.search(query).let(Action::Result)
+        } catch (e: Throwable) {
+            Action.Error(e)
+        }
 
     // mappers
 

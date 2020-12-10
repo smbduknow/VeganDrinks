@@ -22,23 +22,13 @@ class SearchResultsFragment : Fragment(R.layout.fragment_search_results) {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        lifecycleScope.launchWhenStarted {
-            vm.observe().collect { state ->
-                when (state) {
-                    is ViewState.Content -> setContent(state.items)
-                    is ViewState.Initial -> setEmpty("Is your fav beer vegan friendly?")
-                    is ViewState.NoResults -> setEmpty("Nothing was found. Please try again")
-                    is ViewState.NoConnection -> setEmpty("Please check your connection")
-                    is ViewState.Error -> setEmpty("Something went wrong :(")
-                    is ViewState.Loading -> setLoading()
-                }
-            }
-        }
-
         suggestionAdapter.onItemClickListener = { product ->
             vm.dispatch(Action.SelectProduct(product))
         }
 
+        lifecycleScope.launchWhenStarted {
+            vm.viewState.collect(::setState)
+        }
     }
 
     fun startSearch(query: String) {
@@ -48,6 +38,16 @@ class SearchResultsFragment : Fragment(R.layout.fragment_search_results) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         rvItems.adapter = suggestionAdapter
     }
+
+    private fun setState(state: ViewState): Unit =
+        when (state) {
+            is ViewState.Content -> setContent(state.items)
+            is ViewState.Initial -> setEmpty("Is your fav beer vegan friendly?")
+            is ViewState.NoResults -> setEmpty("Nothing was found. Please try again")
+            is ViewState.NoConnection -> setEmpty("Please check your connection")
+            is ViewState.Error -> setEmpty("Something went wrong :(")
+            is ViewState.Loading -> setLoading()
+        }
 
     private fun setContent(items: List<Product>) {
         rvItems.isVisible = true
