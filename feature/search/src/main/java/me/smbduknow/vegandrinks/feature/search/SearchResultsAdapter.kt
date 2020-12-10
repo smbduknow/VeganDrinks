@@ -30,7 +30,7 @@ internal class SearchResultsAdapter : RecyclerView.Adapter<SearchResultsAdapter.
         val item = items[pos]
         holder.titleView.text = item.name
         holder.companyText.text = "by ${item.company?.name}"
-        holder.statusText.text = "TODO"
+        holder.statusText.text = item.status.name
         holder.statusText.setTextColor(
             ContextCompat.getColor(
                 holder.itemView.context,
