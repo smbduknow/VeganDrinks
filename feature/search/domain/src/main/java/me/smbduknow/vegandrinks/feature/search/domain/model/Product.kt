@@ -1,5 +1,7 @@
 package me.smbduknow.vegandrinks.feature.search.domain.model
 
+import java.io.Serializable
+
 data class Product(
     val id: Int,
     val name: String,
@@ -7,7 +9,7 @@ data class Product(
     val type: Type,
     val country: String,
     val company: Company
-) {
+): Serializable {
 
     enum class Status {
         VEGAN, NOT_VEGAN, UNKNOWN

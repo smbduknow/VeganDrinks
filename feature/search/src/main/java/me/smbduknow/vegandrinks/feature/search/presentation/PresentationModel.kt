@@ -14,6 +14,8 @@ internal class PresentationModel : ViewModel() {
 
     private val actionChannel = Channel<Action>()
 
+    val navigationChannel = Channel<Product>()
+
     val viewState = observeActions()
         .stateIn(viewModelScope, SharingStarted.Lazily, ViewState.Initial)
 
@@ -39,6 +41,9 @@ internal class PresentationModel : ViewModel() {
             viewModelScope.launch {
                 dispatch(doSearch(action.query))
             }
+        }
+        if (action is Action.SelectProduct) {
+            navigationChannel.offer(action.product)
         }
         return action.takeUnless { it is Action.SelectProduct }
     }

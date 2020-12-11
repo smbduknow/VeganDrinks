@@ -1,6 +1,8 @@
 package me.smbduknow.vegandrinks.feature.search
 
+import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
@@ -8,6 +10,9 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import kotlinx.android.synthetic.main.fragment_search_results.*
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.consumeAsFlow
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import me.smbduknow.vegandrinks.feature.search.domain.model.Product
 import me.smbduknow.vegandrinks.feature.search.presentation.Action
 import me.smbduknow.vegandrinks.feature.search.presentation.PresentationModel
@@ -19,6 +24,9 @@ class SearchResultsFragment : Fragment(R.layout.fragment_search_results) {
 
     private val suggestionAdapter by lazy { SearchResultsAdapter() }
 
+    // TODO provide via dependencies
+    lateinit var productIntentBuilder: (Product) -> Intent
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -29,6 +37,14 @@ class SearchResultsFragment : Fragment(R.layout.fragment_search_results) {
         lifecycleScope.launchWhenStarted {
             vm.viewState.collect(::setState)
         }
+
+        vm.navigationChannel.consumeAsFlow()
+            .onEach {
+                Log.d("AAAAAAA", "aaaaaa")
+                navigateToDetails(it)
+            }
+            .launchIn(lifecycleScope)
+
     }
 
     fun startSearch(query: String) {
@@ -68,6 +84,10 @@ class SearchResultsFragment : Fragment(R.layout.fragment_search_results) {
         rvItems.isVisible = false
         progressBar.isVisible = true
         tvPlaceholder.isVisible = false
+    }
+
+    private fun navigateToDetails(product: Product) {
+        startActivity(productIntentBuilder(product))
     }
 
 }

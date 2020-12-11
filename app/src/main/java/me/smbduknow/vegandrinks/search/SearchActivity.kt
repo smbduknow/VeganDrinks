@@ -11,6 +11,7 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_main.*
 import me.smbduknow.vegandrinks.R
+import me.smbduknow.vegandrinks.details.ProductActivity
 import me.smbduknow.vegandrinks.feature.search.SearchResultsFragment
 
 class SearchActivity : AppCompatActivity() {
@@ -20,9 +21,14 @@ class SearchActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         val searchResultsFragment = supportFragmentManager.findFragmentById(R.id.searchResults)
+        as? SearchResultsFragment
+
+        searchResultsFragment?.productIntentBuilder = { product ->
+            ProductActivity.newIntent(this, product)
+        }
 
         search_edit.onSubmit { text ->
-            (searchResultsFragment as? SearchResultsFragment)?.startSearch(text)
+            searchResultsFragment?.startSearch(text)
         }
     }
 
