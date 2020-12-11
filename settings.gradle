@@ -1,2 +1,5 @@
+include ':feature:search:domain'
+include ':feature:search'
+include ':feature'
 include ':app'
 include ':data'

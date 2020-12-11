@@ -9,7 +9,7 @@ import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_product.*
 import me.smbduknow.vegandrinks.R
-import me.smbduknow.vegandrinks.data.model.Product
+import me.smbduknow.vegandrinks.feature.search.domain.model.Product
 
 class ProductActivity : AppCompatActivity() {
 
@@ -20,45 +20,45 @@ class ProductActivity : AppCompatActivity() {
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
         window.statusBarColor = Color.TRANSPARENT
 
-        val product = intent.getParcelableExtra<Product?>("product")
+        val product = intent.getSerializableExtra("product") as? Product
 
         setSupportActionBar(toolbar)
         supportActionBar?.apply {
             setDisplayHomeAsUpEnabled(true)
-            title = product?.status
+            title = product?.status?.name
         }
         collapsing_toolbar.scrimAnimationDuration = 200
         collapsing_toolbar.setExpandedTitleColor(Color.parseColor("#00FFFFFF"))
-        collapsing_toolbar.setContentScrimResource(product?.red_yellow_green.statusToColor())
-        collapsing_toolbar.setStatusBarScrimResource(product?.red_yellow_green.statusToColor())
+        collapsing_toolbar.setContentScrimResource(product?.status.statusToColor())
+        collapsing_toolbar.setStatusBarScrimResource(product?.status.statusToColor())
 
-        title_text.text = product?.product_name
-        tv_company.text = product?.company?.company_name
-        tv_status.text = product?.status
+        title_text.text = product?.name
+        tv_company.text = product?.company?.name
+        tv_status.text = product?.status?.name
         tv_country.text = product?.country
         notes_text.text = product?.company?.notes
 
         bg_status.setBackgroundResource(
-            when (product?.red_yellow_green?.toLowerCase()) {
-                "red" -> R.drawable.bg_red
-                "yellow" -> R.drawable.bg_yellow
-                "green" -> R.drawable.bg_green
+            when (product?.status) {
+                Product.Status.NOT_VEGAN -> R.drawable.bg_red
+                Product.Status.UNKNOWN -> R.drawable.bg_yellow
+                Product.Status.VEGAN -> R.drawable.bg_green
                 else -> android.R.color.transparent
             }
         )
 
         img_drink_icon.setBackgroundResource(
-            when (product?.booze_type?.toLowerCase()) {
-                "beer" -> R.drawable.ic_beer
-                "wine" -> R.drawable.ic_wine
-                "liquor" -> R.drawable.ic_liquor
+            when (product?.type) {
+                Product.Type.BEER -> R.drawable.ic_beer
+                Product.Type.WINE -> R.drawable.ic_wine
+                Product.Type.LIQUOR -> R.drawable.ic_liquor
                 else -> 0
             }
         )
     }
 
-    override fun onOptionsItemSelected(item: MenuItem?): Boolean =
-        when (item?.itemId) {
+    override fun onOptionsItemSelected(item: MenuItem): Boolean =
+        when (item.itemId) {
             android.R.id.home -> {
                 finish()
                 true
@@ -68,10 +68,10 @@ class ProductActivity : AppCompatActivity() {
 
     override fun onBackPressed() = finish()
 
-    private fun String?.statusToColor() = when (this?.toLowerCase()) {
-        "red" -> R.color.red_medium
-        "yellow" -> R.color.yellow_medium
-        "green" -> R.color.green_medium
+    private fun Product.Status?.statusToColor() = when (this) {
+        Product.Status.NOT_VEGAN -> R.color.red_medium
+        Product.Status.UNKNOWN -> R.color.yellow_medium
+        Product.Status.VEGAN -> R.color.green_medium
         else -> android.R.color.transparent
     }
 

@@ -1,32 +1,27 @@
-package me.smbduknow.vegandrinks.data
+package me.smbduknow.vegandrinks.feature.search.domain
 
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
+import me.smbduknow.vegandrinks.data.RemoteDataSource
 import me.smbduknow.vegandrinks.data.model.CompanyDto
-import me.smbduknow.vegandrinks.data.model.Product
+import me.smbduknow.vegandrinks.feature.search.domain.model.Product
 
-class SearchRepository {
+object SearchRepository {
 
     private val source = RemoteDataSource
 
     private val mapper = ProductMapper
 
-    fun search(query: String): Flow<List<Product>> = flow {
-        val products = source.getSearchResults(query)
+    suspend fun search(query: String): List<Product> =
+         source.getSearchResults(query)
             .also { delay(100) }
             .map { company -> fetchCompanyProducts(company, query) }
             .flatten()
-        emit(products)
-    }
-
 
     private suspend fun fetchCompanyProducts(companyDto: CompanyDto, query: String): List<Product> {
         val company = mapper.companyFromDto(companyDto)
         return source.getCompanyDetails(companyDto.id).products
-            .filter { it.product_name.contains(query, ignoreCase = true) }
-            .map { mapper.fromDto(it) }
-            .onEach { it.company = company }
+            .filter { product -> product.product_name.contains(query, ignoreCase = true) }
+            .map { productDto -> mapper.fromDto(productDto, company) }
     }
 
 }

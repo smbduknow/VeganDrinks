@@ -7,15 +7,15 @@
     android:clipToPadding="false"
     tools:context=".search.SearchActivity">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvItems"
+    <androidx.fragment.app.FragmentContainerView
+        android:name="me.smbduknow.vegandrinks.feature.search.SearchResultsFragment"
+        android:id="@+id/searchResults"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="48dp"
+        android:paddingTop="32dp"
         android:clipToPadding="false"
-        android:paddingTop="48dp"
-        android:paddingBottom="16dp"
-        tools:listitem="@layout/item_search_result" />
+        android:clipChildren="false"
+        android:layout_marginTop="48dp"/>
 
     <FrameLayout
         android:id="@+id/header"
@@ -43,22 +43,5 @@
             android:textColor="@color/white"
             android:textColorHint="@color/white_alpha" />
     </FrameLayout>
-
-    <TextView
-        android:id="@+id/tvPlaceholder"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center"
-        android:padding="16dp"
-        android:textSize="22sp"
-        android:textColor="#bbbbbb"
-        tools:text="No Content" />
-
-    <ProgressBar
-        android:id="@+id/progressBar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:indeterminate="true" />
 
 </FrameLayout>
