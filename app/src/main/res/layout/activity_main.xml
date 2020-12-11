@@ -7,10 +7,14 @@
     android:clipToPadding="false"
     tools:context=".search.SearchActivity">
 
-    <fragment class="me.smbduknow.vegandrinks.feature.search.SearchResultsFragment"
+    <androidx.fragment.app.FragmentContainerView
+        android:name="me.smbduknow.vegandrinks.feature.search.SearchResultsFragment"
         android:id="@+id/searchResults"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:paddingTop="32dp"
+        android:clipToPadding="false"
+        android:clipChildren="false"
         android:layout_marginTop="48dp"/>
 
     <FrameLayout
